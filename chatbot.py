@@ -8,7 +8,7 @@ header = {
 
 # 2. Request Body 설정
 param = {
-    "request":{
+    "request": {
         "query": "안녕하세요"
     }
 }
