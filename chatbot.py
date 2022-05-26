@@ -3,6 +3,7 @@ import asyncio
 from dotenv import load_dotenv
 import os
 import csv
+import pandas as pd
 
 load_dotenv()
 
@@ -16,13 +17,19 @@ Ping = PingPongWr.Connect(url, pingpong_token)
 f = open('sampleData.csv', 'r', encoding='utf-8-sig')
 rdr = csv.reader(f)
 
+result = []
 
-async def Example():
+
+async def getData():
     for str_text in rdr:
-        print(str_text)
         return_data = await Ping.Pong(session_id="Example", text=str_text, topic=False, image=False, dialog=False)
-        print("피식이: " + return_data.get('text'))
+        result.append([str_text[0], return_data.get('text')])
 
-asyncio.run(Example())
+asyncio.run(getData())
 
 f.close()
+
+df = pd.DataFrame(result, columns=['Question', 'Answer'])
+df.to_excel('result.xlsx', index=False)
+
+print("챗봇 질문-답변 작업 완료!")
